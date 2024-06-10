@@ -1,17 +1,39 @@
 const express = require("express");
+const cors = require("cors");
+const { databaseConnection } = require("./database/connection.js");
+const { userRouter } = require("./routes/user.route.js");
+
 const app = express();
+const PORT = 5000;
+
+// MongoDB connection
+databaseConnection();
+
+// Allow only a specific origin
+const allowedOrigin = "http://localhost:3000";
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || origin === allowedOrigin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+  })
+);
+
 app.use(express.json());
-require("./Config/db.connection");
-const userRoutes = require("./Routes/student.routes");
-const adminRoutes = require("./Routes/admin.routes");
-const teacherRoutes = require("./Routes/teacher.routes");
-const lessonRoutes = require("./Routes/lesson.routes");
+app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 
-app.use("/user", userRoutes);
-app.use("/admin", adminRoutes);
-app.use("/teacher", teacherRoutes);
-app.use("/lesson", lessonRoutes);
+app.use("/user", userRouter);
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server in running on port ${PORT}`);
 });
