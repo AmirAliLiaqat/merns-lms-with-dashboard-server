@@ -4,8 +4,7 @@ const User = require("../modules/user.model");
 // create user
 const createUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, phoneNumber, age, accessLevel } =
-      req.body;
+    const { firstName, lastName, email, phoneNumber, age } = req.body;
     const profilePicture = req.file.path;
 
     const newUser = new User({
@@ -15,7 +14,7 @@ const createUser = async (req, res) => {
       phoneNumber,
       age,
       profilePicture,
-      accessLevel,
+      accessLevel: "Admin",
     });
 
     await newUser.save();
@@ -80,11 +79,9 @@ const getUserByEmail = async (req, res) => {
 };
 
 // update user by id
-
 const updateUserById = async (req, res) => {
   const userId = req.params.id;
-  const { firstName, lastName, email, phoneNumber, age, accessLevel } =
-    req.body;
+  const { firstName, lastName, email, phoneNumber, age } = req.body;
   const profilePicture = req.file.path;
   const updatedUser = {
     firstName,
@@ -93,7 +90,7 @@ const updateUserById = async (req, res) => {
     phoneNumber,
     age,
     profilePicture,
-    accessLevel,
+    accessLevel: "Admin",
   };
 
   try {
