@@ -37,8 +37,7 @@ const userSchema = new mongoose.Schema(
     },
     accessLevel: {
       type: String,
-      required: true,
-      enum: ["Admin", "User", "Manager"],
+      default:"Admin"
     },
   },
   { timestamps: true }

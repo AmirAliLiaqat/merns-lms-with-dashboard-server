@@ -1,12 +1,12 @@
 const fs = require("fs");
 const User = require("../modules/user.model");
-
-// create user
 const createUser = async (req, res) => {
   try {
     const { firstName, lastName, email, phoneNumber, age } = req.body;
     const profilePicture = req.file.path;
+    console.log("admin",profilePicture)
 
+    console.log("............................................admin",req.body);
     const newUser = new User({
       firstName,
       lastName,
@@ -14,7 +14,6 @@ const createUser = async (req, res) => {
       phoneNumber,
       age,
       profilePicture,
-      accessLevel: "Admin",
     });
 
     await newUser.save();

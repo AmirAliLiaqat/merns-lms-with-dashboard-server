@@ -45,5 +45,6 @@ userRouter.put("/:id", upload.single("profilePicture"), updateUserById);
 userRouter.delete("/:id", deleteUserById);
 
 module.exports = {
+  upload,
   userRouter,
 };
