@@ -36,6 +36,10 @@ const StudentSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    department:{
+           type: String,
+        required: true
+    }
     accessLevel: {
         type: String,
         default: "Student"
