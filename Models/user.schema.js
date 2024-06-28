@@ -1,22 +1,21 @@
 const mongoose = require("mongoose");
 
-const StudentSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
+    trim: true,
   },
   lastName: {
     type: String,
     required: true,
+    trim: true,
   },
   email: {
     type: String,
+    required: true,
     unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
+    match: [/^\S+@\S+\.\S+$/, "Invalid email format"],
   },
   phoneNumber: {
     type: String,
@@ -27,38 +26,20 @@ const StudentSchema = mongoose.Schema({
     ],
   },
   age: {
-    type: String,
+    type: Number,
     required: true,
     min: 0,
-  },
-  cnic: {
-    type: String,
-    required: true,
   },
   profilePicture: {
     type: String,
     required: true,
   },
-  section: {
-    type: String,
-    required: true,
-  },
-  department: {
-    type: String,
-    required: true,
-  },
   accessLevel: {
     type: String,
-    default: "Student",
-  },
-  department: {
-    type: String,
-    required: true,
+    default: "Admin",
   },
 });
 
-const StudentModel = mongoose.model("student", StudentSchema, "student");
+const User = mongoose.model("User", userSchema);
 
-module.exports = {
-  StudentModel,
-};
+module.exports = User;

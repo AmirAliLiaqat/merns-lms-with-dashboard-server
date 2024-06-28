@@ -1,10 +1,12 @@
 const fs = require("fs");
-const User = require("../modules/user.model");
+const User = require("../models/user.schema");
+
+// create user
 const createUser = async (req, res) => {
   try {
     const { firstName, lastName, email, phoneNumber, age } = req.body;
     const profilePicture = req.file.path;
-  
+
     const newUser = new User({
       firstName,
       lastName,

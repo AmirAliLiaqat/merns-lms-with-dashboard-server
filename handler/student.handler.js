@@ -1,7 +1,9 @@
-const { StudentModel } = require("../Models/student.schema");
+const { StudentModel } = require("../models/student.schema");
 const bcrypt = require("bcrypt");
+
 const saltRounds = 10;
 
+// create student
 const createStudent = async (req, res) => {
   try {
     const {
@@ -17,14 +19,14 @@ const createStudent = async (req, res) => {
     } = req.body;
 
     const salt = await bcrypt.genSalt(saltRounds);
-    const haspassword = await bcrypt.hash(password, salt);
+    const hashPassword = await bcrypt.hash(password, salt);
     const profilePicture = req.file.path;
 
     const student = new StudentModel({
       age,
       firstName,
       email,
-      password: haspassword,
+      password: hashPassword,
       cnic,
       department,
       lastName,
@@ -39,6 +41,7 @@ const createStudent = async (req, res) => {
   }
 };
 
+// get all students
 const getAllStudents = async (req, res) => {
   try {
     const students = await StudentModel.find();
@@ -48,18 +51,16 @@ const getAllStudents = async (req, res) => {
   }
 };
 
+// login student
 const loginStudent = async (req, res) => {
   try {
-    const {email, password} = req.body; 
+    const { email, password } = req.body;
     const userData = await StudentModel.findOne({ email: email });
-    console.log("userData", userData);
+
     if (userData == null) {
       res.status(404).json({ message: "Invalid Credentials" });
     } else {
-      const isMatch = await bcrypt.compare(
-        password,
-        userData.password
-      );
+      const isMatch = await bcrypt.compare(password, userData.password);
       if (isMatch) {
         res.status(200).json(userData);
       } else {
@@ -68,6 +69,7 @@ const loginStudent = async (req, res) => {
     }
   } catch (error) {}
 };
+
 module.exports = {
   createStudent,
   getAllStudents,
