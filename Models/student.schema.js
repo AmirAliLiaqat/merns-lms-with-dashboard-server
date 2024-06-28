@@ -16,6 +16,10 @@ const StudentSchema = mongoose.Schema({
         unique: true,
         required: true
     },
+    password:{
+        type: String,
+        required:true
+    },
     phoneNumber: {
         type: String,
         required: true
@@ -43,6 +47,10 @@ const StudentSchema = mongoose.Schema({
     accessLevel: {
         type: String,
         default: "Student"
+    },
+    department: {
+        type: String,
+        required: true
     }
 });
 

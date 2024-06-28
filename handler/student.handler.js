@@ -1,4 +1,6 @@
 const { StudentModel } = require("../Models/student.schema");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const createStudent = async (req, res) => {
   try {
@@ -11,16 +13,18 @@ const createStudent = async (req, res) => {
       lastName,
       phoneNumber,
       section,
+      password,
     } = req.body;
-  
-    
+
+    const salt = await bcrypt.genSalt(saltRounds);
+    const haspassword = await bcrypt.hash(password, salt);
     const profilePicture = req.file.path;
 
-    
     const student = new StudentModel({
       age,
       firstName,
       email,
+      password: haspassword,
       cnic,
       department,
       lastName,
@@ -44,7 +48,28 @@ const getAllStudents = async (req, res) => {
   }
 };
 
+const loginStudent = async (req, res) => {
+  try {
+    const {email, password} = req.body; 
+    const userData = await StudentModel.findOne({ email: email });
+    console.log("userData", userData);
+    if (userData == null) {
+      res.status(404).json({ message: "Invalid Credentials" });
+    } else {
+      const isMatch = await bcrypt.compare(
+        password,
+        userData.password
+      );
+      if (isMatch) {
+        res.status(200).json(userData);
+      } else {
+        res.status(404).json({ message: "Invalid password" });
+      }
+    }
+  } catch (error) {}
+};
 module.exports = {
   createStudent,
   getAllStudents,
+  loginStudent,
 };
