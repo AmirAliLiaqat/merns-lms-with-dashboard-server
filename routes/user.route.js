@@ -7,7 +7,7 @@ const {
   getUserByEmail,
   updateUserById,
   deleteUserById,
-} = require("../controllers/user.controller");
+} = require("../handler/user.handler");
 
 const userRouter = express.Router();
 
