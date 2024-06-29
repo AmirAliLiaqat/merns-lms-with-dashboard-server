@@ -1,15 +1,15 @@
 const express = require("express");
 const multer = require("multer");
 const {
-  createUser,
-  getAllUsers,
-  getUserById,
-  getUserByEmail,
-  updateUserById,
-  deleteUserById,
-} = require("../handler/user.handler");
+  createAdmin,
+  getAllAdmins,
+  getAdminById,
+  getAdminByEmail,
+  updateAdminById,
+  deleteAdminById,
+} = require("../handler/admin.handler");
 
-const userRouter = express.Router();
+const adminRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -37,14 +37,14 @@ const upload = multer({
   },
 });
 
-userRouter.post("/", upload.single("profilePicture"), createUser);
-userRouter.get("/", getAllUsers);
-userRouter.get("/:id", getUserById);
-userRouter.get("/loginWithEmail/:email", getUserByEmail);
-userRouter.put("/:id", upload.single("profilePicture"), updateUserById);
-userRouter.delete("/:id", deleteUserById);
+adminRouter.post("/", upload.single("profilePicture"), createAdmin);
+adminRouter.get("/", getAllAdmins);
+adminRouter.get("/:id", getAdminById);
+adminRouter.get("/loginWithEmail/:email", getAdminByEmail);
+adminRouter.put("/:id", upload.single("profilePicture"), updateAdminById);
+adminRouter.delete("/:id", deleteAdminById);
 
 module.exports = {
   upload,
-  userRouter,
+  adminRouter,
 };

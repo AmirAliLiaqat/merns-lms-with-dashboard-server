@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const { databaseConnection } = require("./config/connection.js");
-const { userRouter } = require("./routes/user.route.js");
-const  studentRouter  = require("./routes/student.routes.js");
+const { adminRouter } = require("./routes/admin.routes.js");
+const { studentRouter } = require("./routes/student.routes.js");
 
 const app = express();
 const PORT = 5000;
@@ -29,9 +29,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 
-app.use("/user", userRouter);
+app.use("/admin", adminRouter);
 app.use("/student", studentRouter);
-
 
 app.listen(PORT, () => {
   console.log(`Server in running on port ${PORT}`);
