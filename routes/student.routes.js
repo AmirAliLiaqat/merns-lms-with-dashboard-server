@@ -1,12 +1,23 @@
 const express = require("express");
-const { createStudent, getAllStudents,loginStudent } = require("../handler/student.handler");
-const { upload } = require("../routes/user.route");
-const router = express.Router();
+const {
+  createStudent,
+  getAllStudents,
+  loginStudent,
+} = require("../handler/student.handler");
+const { upload } = require("./admin.routes");
 
-router.get("/getAllStudents", getAllStudents);
-router.post("/loginStudent", loginStudent);
-router.post("/createStudent", upload.single("profilePicture"),createStudent);
-router.put("/updateStudent/:studentId");
-router.delete("/deletStudent/:studentId");
+const studentRouter = express.Router();
 
-module.exports = router;
+studentRouter.get("/getAllStudents", getAllStudents);
+studentRouter.post("/loginStudent", loginStudent);
+studentRouter.post(
+  "/createStudent",
+  upload.single("profilePicture"),
+  createStudent
+);
+studentRouter.put("/updateStudent/:studentId");
+studentRouter.delete("/deleteStudent/:studentId");
+
+module.exports = {
+  studentRouter,
+};

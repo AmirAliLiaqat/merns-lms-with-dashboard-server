@@ -1,4 +1,4 @@
-const { StudentModel } = require("../models/student.schema");
+const StudentModel = require("../models/student.schema.js");
 const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
@@ -34,6 +34,7 @@ const createStudent = async (req, res) => {
       section,
       profilePicture,
     });
+
     await student.save();
     res.status(201).json(student);
   } catch (error) {
@@ -55,19 +56,22 @@ const getAllStudents = async (req, res) => {
 const loginStudent = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const userData = await StudentModel.findOne({ email: email });
+    const userData = await StudentModel.findOne({ email });
 
-    if (userData == null) {
-      res.status(404).json({ message: "Invalid Credentials" });
-    } else {
-      const isMatch = await bcrypt.compare(password, userData.password);
-      if (isMatch) {
-        res.status(200).json(userData);
-      } else {
-        res.status(404).json({ message: "Invalid password" });
-      }
+    if (!userData) {
+      return res.status(404).json({ message: "Invalid Credentials" });
     }
-  } catch (error) {}
+
+    const isMatch = await bcrypt.compare(password, userData.password);
+
+    if (isMatch) {
+      res.status(200).json(userData);
+    } else {
+      res.status(401).json({ message: "Invalid password" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
