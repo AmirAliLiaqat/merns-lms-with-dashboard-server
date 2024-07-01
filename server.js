@@ -3,6 +3,7 @@ const cors = require("cors");
 const { databaseConnection } = require("./config/connection.js");
 const { adminRouter } = require("./routes/admin.routes.js");
 const { studentRouter } = require("./routes/student.routes.js");
+const { teacherRouter } = require("./routes/teacher.routes.js");
 
 const app = express();
 const PORT = 5000;
@@ -31,6 +32,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use("/admin", adminRouter);
 app.use("/student", studentRouter);
+app.use("/teacher", teacherRouter);
 
 app.listen(PORT, () => {
   console.log(`Server in running on port ${PORT}`);
